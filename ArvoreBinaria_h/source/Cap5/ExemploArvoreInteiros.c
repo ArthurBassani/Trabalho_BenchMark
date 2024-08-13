@@ -8,10 +8,16 @@ int main(){
 
     /* teste de inclusao */
     incluirInfo(pArvoreInt, alocaInt(5), comparaInt);
+    incluirInfo(pArvoreInt, alocaInt(4), comparaInt);
+    incluirInfo(pArvoreInt, alocaInt(7), comparaInt);
+    incluirInfo(pArvoreInt, alocaInt(6), comparaInt);
+    incluirInfo(pArvoreInt, alocaInt(8), comparaInt);
     
-    emOrdem(pArvoreInt->raiz, imprimeInt);
     printf("\n");
 
     desenhaArvore(pArvoreInt, imprimeInt);
+    excluirInfo(pArvoreInt, alocaInt(4), comparaInt);
+    desenhaArvore(pArvoreInt, imprimeInt);
+    printf("\n\n");
 
 }

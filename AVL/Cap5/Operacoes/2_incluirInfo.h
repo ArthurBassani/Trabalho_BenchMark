@@ -1,14 +1,13 @@
 #ifndef CRIAR_ARVORE_BINARIA_H
 #define CRIAR_ARVORE_BINARIA_H
-
+#include "14_recalcularFB.h"
+#include "11_altura.h"
 //---------------------------------------
 pNohArvore rotacaoDireita(pNohArvore raiz){
     pNohArvore u;
-
     u = raiz->esquerda;
     raiz->esquerda = u->direita;
     u->direita     = raiz;
-
     return u;
 }
 
@@ -60,15 +59,15 @@ pNohArvore incluirInfoRecursivo(pNohArvore raiz, void *info, FuncaoComparacao pf
    }
 
 
-   // faz a inclusão normal na árvore, em seguida, recalcula o FB
-   // de cada nóh afetado pela inclusão (conforme a pilha de recursão) e
-   // verifica quais ficaram desbalanceados e aplica as operações de rotação
-   // necessárias, conforme cada caso.
-   // As rotações devem ser aplicadas no sentido dos nós folha
-   // para a raiz da árvore. Por que? Porque a rotacao de um nó interno pode
-   // afetar o FB do nó pai.
+   // faz a inclusï¿½o normal na ï¿½rvore, em seguida, recalcula o FB
+   // de cada nï¿½h afetado pela inclusï¿½o (conforme a pilha de recursï¿½o) e
+   // verifica quais ficaram desbalanceados e aplica as operaï¿½ï¿½es de rotaï¿½ï¿½o
+   // necessï¿½rias, conforme cada caso.
+   // As rotaï¿½ï¿½es devem ser aplicadas no sentido dos nï¿½s folha
+   // para a raiz da ï¿½rvore. Por que? Porque a rotacao de um nï¿½ interno pode
+   // afetar o FB do nï¿½ pai.
 
-   // É preciso também recalcular o FB dos nóhs rotacionados
+   // ï¿½ preciso tambï¿½m recalcular o FB dos nï¿½hs rotacionados
    //
 
     //printf("\n FB da raiz: %d[fb=%d] \n", *((int*)raiz->info), raiz->fb);
@@ -77,10 +76,10 @@ pNohArvore incluirInfoRecursivo(pNohArvore raiz, void *info, FuncaoComparacao pf
                alturaRecursiva(raiz->esquerda);
 
     if (raiz->fb == 2 || raiz->fb == -2){
-        // precisa balancear, então verifica qual rotação aplicar
+        // precisa balancear, entï¿½o verifica qual rotaï¿½ï¿½o aplicar
 
        if (raiz->fb == 2){
-          // sinais iguais -> rotação simples
+          // sinais iguais -> rotaï¿½ï¿½o simples
           if ((raiz->direita  != NULL && (raiz->direita->fb  == 1 || raiz->direita->fb  == 0)) ||
               (raiz->esquerda !=NULL  && (raiz->esquerda->fb == 1 || raiz->esquerda->fb == 0))){
 
@@ -102,9 +101,10 @@ pNohArvore incluirInfoRecursivo(pNohArvore raiz, void *info, FuncaoComparacao pf
        }
 
        if (raiz->fb == -2){
-          // sinais iguais -> rotação simples
+          // sinais iguais -> rotaï¿½ï¿½o simples
           if ((raiz->direita != NULL && (raiz->direita->fb  == -1 || raiz->direita->fb  == 0)) ||
-              (raiz->esquerda !=NULL && (raiz->esquerda->fb == -1 || raiz->esquerda->fb == 0))){              printf(" -> Rotacao simples Direita <- ");
+              (raiz->esquerda !=NULL && (raiz->esquerda->fb == -1 || raiz->esquerda->fb == 0))){              
+                // printf(" -> Rotacao simples Direita <- ");
 
                // rotacao simples direita
                 pNohArvore novaRaiz = rotacaoDireita(raiz);
@@ -129,8 +129,6 @@ pNohArvore incluirInfoRecursivo(pNohArvore raiz, void *info, FuncaoComparacao pf
 
 /* ----------------------------------------------------------*/
 void incluirInfo(pDArvore arvore, void *info, FuncaoComparacao pfc){
-
-    printf("\n --- Incluindo info: %d ---\n", *((int*)info));
     arvore->raiz = incluirInfoRecursivo(arvore->raiz, info, pfc);
 }
 

@@ -11,6 +11,11 @@ int comparaInt(void *info1, void *info2){
     int *p2 = (int *) info2;
     return *p2 - *p1;
 }
+long int comparaLongInt(void *info1, void *info2){
+    long int *p1 = (long int *) info1;
+    long int *p2 = (long int *) info2;
+    return *p2 - *p1;
+}
 /* ---------------------------------------- */
 void imprimeInt(void *info){
    int *pi = (int *) info;
@@ -25,6 +30,11 @@ void* alocaInfoInt(void *info){
 /* ---------------------------------------- */
 int* alocaInt(int n){
    int *pi = (int *) malloc(sizeof(int));
+   *pi = n;
+   return pi;
+}
+long int* alocaLongInt(long int n){
+   long int *pi = (long int *) malloc(sizeof(long int));
    *pi = n;
    return pi;
 }

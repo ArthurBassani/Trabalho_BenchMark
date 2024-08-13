@@ -1,5 +1,6 @@
 #ifndef RECALCULAR_FB_ARVORE_H
 #define RECALCULAR_FB_ARVORE_H
+#include "11_altura.h"
 
 void recalcularFB_Recursivo(pNohArvore raiz) {
     if (raiz == NULL)

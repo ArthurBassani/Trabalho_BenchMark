@@ -4,7 +4,7 @@
 /* --------------------------*/
 pNohArvore incluirInfoRecursivo(pNohArvore raiz, void *info, FuncaoComparacao pfc){
     if(raiz == NULL){
-        pNohArvore pNovo = malloc(sizeof(pNohArvore));
+        pNohArvore pNovo = malloc(sizeof(NohArvore));
         
         pNovo->direita = NULL;
         pNovo->esquerda = NULL;

@@ -1,108 +1,41 @@
 #ifndef EXCLUIRINFO_ARVORE_BINARIA_H
 #define EXCLUIRINFO_ARVORE_BINARIA_H
-
+#include <stdlib.h>
 /* --------------------------*/
-pNohArvore excluirInfoRecursivo(pNohArvore raiz, void *info, FuncaoComparacao fc)
+pNohArvore excluirInfoRecursivo(pNohArvore raiz, void *info, FuncaoComparacao pfc)
 {
-    pNohArvore prox = NULL;
-    if (fc(info, raiz->info) == 0)
-    {
-        return raiz;
-    }
+    if (raiz == NULL) return raiz;
 
-    if (raiz->esquerda != NULL)
-        prox = excluirInfoRecursivo(raiz->esquerda, info, fc);
+    int result = pfc(raiz->info, info);
+    
+    if (result < 0)
+        raiz->esquerda = excluirInfoRecursivo(raiz->esquerda, info, pfc);   
+    if (result > 0)
+        raiz->direita = excluirInfoRecursivo(raiz->direita, info, pfc);
 
-    if (prox != NULL)
-    {
-        if (prox->direita == NULL && prox->esquerda == NULL) // CASO SEJA UMA FOLHA
-            raiz->esquerda = NULL;
+    if (result == 0){
 
-        if (prox->direita == NULL && prox->esquerda != NULL) // CASO TENHA 1 FILHO NA DIREITA
-            raiz->esquerda = prox->esquerda;
-
-        if (prox->direita != NULL && prox->esquerda == NULL) // CASO TENHA 1 FILHO NA ESQUERDA
-            raiz->direita = prox->direita;
-
-        if (prox->direita != NULL && prox->esquerda != NULL) // CASO TENHA 2 FILHOS
+        if (raiz->esquerda == NULL)
         {
-            int esq = -fc(info, prox->esquerda->info);
-            int dir = fc(info, prox->direita->info);
-
-            pNohArvore pDir = prox->direita;
-            pNohArvore pEsq = prox->esquerda;
-            pNohArvore pAux;
-            if (esq < dir)
-            {
-                pAux = pEsq;
-                while (pAux->direita != NULL)
-                {
-                    pAux = pAux->direita;
-                }
-                pAux->direita = pDir;
-                raiz->esquerda = pEsq;
-            }
-            else
-            {
-                pAux = pDir;
-                while (pAux->esquerda != NULL)
-                {
-                    pAux = pAux->esquerda;
-                }
-                pAux->esquerda = pEsq;
-                raiz->esquerda = pDir;
-            }
+            pNohArvore pNoh = raiz->direita;
+            free(raiz);
+            return pNoh;
         }
-        free(prox);
-        return NULL;
-    }
-
-    if (raiz->direita != NULL)
-        prox = excluirInfoRecursivo(raiz->direita, info, fc);
-
-    if (prox != NULL)
-    {
-        if (prox->direita == NULL && prox->esquerda == NULL) // CASO SEJA UMA FOLHA
-            raiz->direita = NULL;
-
-        if (prox->direita == NULL && prox->esquerda != NULL)
-            raiz->esquerda = prox->esquerda;
-
-        if (prox->direita != NULL && prox->esquerda == NULL)
-            raiz->direita = prox->direita;
-
-        if (prox->direita != NULL && prox->esquerda != NULL)
+        else if (raiz->direita == NULL)
         {
-            int esq = fc(prox->esquerda->info, info);
-            int dir = -fc(prox->direita->info, info);
-
-            pNohArvore pDir = prox->direita;
-            pNohArvore pEsq = prox->esquerda;
-            pNohArvore pAux;
-            if (esq < dir)
-            {
-                pAux = pEsq;
-                while (pAux->direita != NULL)
-                {
-                    pAux = pAux->direita;
-                }
-                pAux->direita = pDir;
-                raiz->direita = pEsq;
-            }
-            else
-            {
-                pAux = pDir;
-                while (pAux->esquerda != NULL)
-                {
-                    pAux = pAux->esquerda;
-                }
-                pAux->esquerda = pEsq;
-                raiz->direita = pDir;
-            }
+            pNohArvore pNoh = raiz->esquerda;
+            free(raiz);
+            return pNoh;
         }
-        free(prox);
-        return NULL;
+        pNohArvore pAux = raiz->direita ;
+        while (pAux != NULL && pAux->esquerda != NULL)
+        {
+            pAux = pAux->esquerda;
+        }
+        raiz->info = pAux->info;
+        raiz->direita = excluirInfoRecursivo(raiz->direita, pAux->info, pfc);
     }
+    return raiz;
 }
 
 /* ----------------------------------------------------------*/
@@ -113,56 +46,7 @@ int excluirInfo(pDArvore arvore, void *info, FuncaoComparacao pfc)
         printf("Arvore sem Nohs\n");
         return 0;
     }
-
-    if (pfc(arvore->raiz->info, info) == 0)
-    {
-        pNohArvore pRaiz = arvore->raiz;
-        if (pRaiz->esquerda != NULL && pRaiz->direita == NULL)
-        {
-            arvore->raiz = pRaiz->esquerda;
-        }
-        if (pRaiz->direita != NULL && pRaiz->esquerda == NULL)
-        {
-            arvore->raiz = pRaiz->direita;
-        }
-
-        if (pRaiz->direita == NULL && pRaiz->esquerda == NULL)
-        {
-            arvore->raiz = NULL;
-        }
-
-        if (pRaiz->direita != NULL && pRaiz->esquerda != NULL)
-        {
-            int esq = -pfc(info, pRaiz->esquerda->info);
-            int dir = pfc(info, pRaiz->direita->info);
-            pNohArvore pAux;
-            if (esq < dir)
-            {
-                pAux = pRaiz->esquerda;
-                while (pAux->direita != NULL)
-                {
-                    pAux = pAux->direita;
-                }
-                pAux->direita = pRaiz->direita;
-                arvore->raiz = pRaiz->esquerda;
-            }
-            else
-            {
-                pAux = pRaiz->direita;
-                while (pAux->esquerda != NULL)
-                {
-                    pAux = pAux->esquerda;
-                }
-                pAux->esquerda = pRaiz->esquerda;
-                arvore->raiz = pRaiz->direita;
-            }
-
-            free(pRaiz);
-            return 1;
-        }
-    }
-
-    excluirInfoRecursivo(arvore->raiz, info, pfc);
+    arvore->raiz = excluirInfoRecursivo(arvore->raiz, info, pfc);
     return 1;
 }
 

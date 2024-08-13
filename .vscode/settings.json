@@ -2,6 +2,11 @@
   "files.associations": {
     "arvorebinaria.h": "c",
     "3_excluirinfo.h": "c",
-    "time.h": "c"
+    "time.h": "c",
+    "2_incluirinfo.h": "c",
+    "stack": "cpp",
+    "arvoreavl.h": "c",
+    "utils.h": "c",
+    "arvorerubronegra.h": "c"
   }
 }

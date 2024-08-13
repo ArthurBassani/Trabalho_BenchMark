@@ -1,36 +1,54 @@
 #include <stdio.h>
 #include <stdlib.h>
-#include "ArvoreBinaria_h\source\Cap5\ArvoreBinaria.h"
 #include <time.h>
+#include "gerador_arquivos.h"
+#include "ArvoreBinaria_h\source\Cap5\ArvoreBinaria.h"
+// #include "AVL/Cap5/ArvoreAVL.h"
+// #include "RubroNegra/Cap5/ArvoreRubroNegra.h"
+
+void incluirInfosArvore(pDArvore arvore, FILE* arq, long int quantidade);
+void incluirInfosArvore(pDArvore arvore, FILE* arq, long int quantidade) {
+    long int i;
+    int num;
+    for (i = 0; i < quantidade; i++) {
+        fscanf(arq,"%d",&num);
+        incluirInfo(arvore, alocaInt(num),comparaInt);
+    }
+}
+
 
 int main() {
-    int quantidade;
-    int i;
-    FILE* arq = fopen("Numeros Aleatorios BENCHMARK.txt","r");
-
-    quantidade = 1000;
-
     srand(time(NULL));
-    
+    FILE* arq;
     pDArvore arvore = criarArvore(2);
+    long int quantidade;
+    clock_t inicio,fim;
+    pNohArvore noh = NULL;
+    arq = fopen(Arq1M,"r");
+    quantidade = _1M;
+    int numeroParaBuscaEExclusao = Num_Busca_1m;
+    
 
-    clock_t tempo_inserir_1000_infos_abb = clock();
+    incluirInfosArvore(arvore,arq,quantidade);
 
+    inicio = clock();
+    noh = buscarInfo(arvore,alocaInt(numeroParaBuscaEExclusao), comparaInt);
+    
+    // excluirInfo(arvore, alocaInt(numeroParaBuscaEExclusao), comparaInt);
+    
 
-    for (i = 0; i < quantidade; i++) {
-        int numero_aleatorio = rand();
-        incluirInfo(arvore, alocaInt(numero_aleatorio),comparaInt);
-        printf("%d\n",numero_aleatorio);
-        // fprintf(arq,"%d\n",numero_aleatorio);
-        // int numero_aleatorio = fscanf(arq,"%d\n",numero_aleatorio);
+    fim = clock();
+    printf("Tempo de excluir noh em 1m: %.10f segundos\n", 
+            (double)(fim - inicio) / CLOCKS_PER_SEC);
 
+    if (noh == NULL) {
+        printf("Noh nao encontrado\n");
+    } else {
+        printf("Noh encontrado: %d\n", *(int*)noh->info);
     }
-
-    // desenhaArvore(arvore,imprimeInt);
-
-    printf("Tempo para ler %d numeros aleatorios: %.6f segundos\n", 
-            (double)(clock() - tempo_inserir_1000_infos_abb) / CLOCKS_PER_SEC);
-
     fclose(arq);
     return 0;
 }
+
+
+
